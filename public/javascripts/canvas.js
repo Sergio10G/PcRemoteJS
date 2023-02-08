@@ -22,27 +22,17 @@ console.log("Yo!");
 
 let registeringTrail = false;
 let dataSendTimer = null;
-let startPoint = null;
-let endPoint = null;
+let trailPoint = null;
 let trail = [];
 
 canvas.addEventListener("touchstart", (ev) => {
-	let evt = (typeof ev.originalEvent === 'undefined') ? ev : ev.originalEvent;
-	let touch = evt.touches[0] || evt.changedTouches[0];
-	let tStartEvt = new MouseEvent("mousedown", {
-		clientX: touch.pageX,
-		clientY: touch.pageY
-	});
+	let tStartEvt = new MouseEvent("mousedown", null);
 	canvas.dispatchEvent(tStartEvt);
 });
 
 canvas.addEventListener("mousedown", (ev) => {
     console.log("Mouse Down");
 	trail = [];
-	startPoint = {
-		x: ev.clientX,
-		y: ev.clientY
-	};
 	registeringTrail = true;
 	dataSendTimer = setInterval(sendTrail, reqPeriod);
 }, false);
@@ -65,15 +55,11 @@ canvas.addEventListener("touchmove", (ev) => {
 canvas.addEventListener("mousemove", (ev) => {
 	if (!registeringTrail)
 		return;
-	if (endPoint != null)
-		startPoint = endPoint;
-	endPoint = {
+	trailPoint = {
 		x: ev.clientX,
 		y: ev.clientY
 	};
-	//console.log(startPoint);
-	trail.push(startPoint);
-	trail.push(endPoint);
+	trail.push(trailPoint);
 });
 
 canvas.addEventListener("touchend", (ev) => {
@@ -90,7 +76,6 @@ canvas.addEventListener("mouseup", (ev) => {
 	}
 
 	registeringTrail = false;
-	startPoint = null;
-	endPoint = null;
+	trailPoint = null;
 	canvas.style.backgroundColor = "gray";
 });

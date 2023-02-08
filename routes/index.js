@@ -24,6 +24,7 @@ router.post('/com', function (req, res) {
 	  dataStr = dataStr.replace(new RegExp("},{", "g"), "}-{");
 	  let data = dataStr.split('-');
 	  let items = data.map(i => JSON.parse(i));
+	  console.log(items.length);
 	  console.log(items);
   }
   res.status(200);
